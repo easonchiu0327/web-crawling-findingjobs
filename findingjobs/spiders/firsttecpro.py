@@ -16,8 +16,8 @@ class FirsttecproSpider(scrapy.Spider):
             link = job.xpath(".//a[@class='button']/@href").get()
 
             yield{
-                "company": company,
-                "job_title": job_title,
-                "location": location.strip() if location else None,
-                "link": link,
+                "Company": company,
+                "Job_title": job_title,
+                "Location": location.strip() if location else None,
+                "Link": link,
             }

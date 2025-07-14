@@ -46,7 +46,7 @@ class VendastaSpider(scrapy.Spider):
 
                 yield{
                     "Company": company,
-                    "Job title": job_title,
+                    "Job_title": job_title,
                     "Location": location,
                     "Link": urljoin(self.start_urls[0], link),
                 }

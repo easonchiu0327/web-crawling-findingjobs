@@ -16,8 +16,8 @@ class SasksoftwareSpider(scrapy.Spider):
 
             yield{
                 "Company": company,
-                "Job Title": job_title,
+                "Job_title": job_title,
                 "Location": location,
-                "link": link,
+                "Link": link,
 
             }

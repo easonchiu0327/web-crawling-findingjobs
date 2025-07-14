@@ -15,9 +15,9 @@ class HorizonSpider(scrapy.Spider):
             link = job.xpath("./@href").get()
 
             yield{
-                "company": company,
-                "job_title": job_title,
-                "location": location,
+                "Company": company,
+                "Job_title": job_title,
+                "Location": location,
                 #getting the absolute url
-                "link": response.urljoin(link),
+                "Link": response.urljoin(link),
             }

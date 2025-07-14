@@ -16,8 +16,8 @@ class WbmSpider(scrapy.Spider):
             link = job.xpath('./@href').get()
 
             yield{
-                'company': company,
-                'job_title': job_title,
-                'location': location,
-                'link': link,
+                'Company': company,
+                'Job_title': job_title,
+                'Location': location,
+                'Link': link,
             }

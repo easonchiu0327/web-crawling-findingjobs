@@ -57,7 +57,7 @@ class UniverusSpider(scrapy.Spider):
 
                 yield {
                     'Company': company,
-                    'Job title': job_title,
+                    'Job_title': job_title,
                     'Location': location,
                     'Link': link,
                 }

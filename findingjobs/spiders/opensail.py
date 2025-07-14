@@ -15,8 +15,8 @@ class OpensailSpider(scrapy.Spider):
             link = job.xpath('.//a/@href').get()
 
             yield {
-                "company": company,
-                "job_title": job_title,
-                "location": location,
-                "link": response.urljoin(link),
+                "Company": company,
+                "Job_title": job_title,
+                "Location": location,
+                "Link": response.urljoin(link),
             }

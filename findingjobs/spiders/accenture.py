@@ -67,7 +67,7 @@ class AccentureSpider(scrapy.Spider):
                 if job_title and link:
                     item = {
                         'Company': company,
-                        'Job title': job_title,
+                        'Job_title': job_title,
                         'Location': location,
                         'Link': link,
                     }

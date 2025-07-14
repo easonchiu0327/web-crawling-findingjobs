@@ -16,9 +16,9 @@ class PushinteractionsSpider(scrapy.Spider):
             link = job.xpath(".//a[@class='button w-button']/@href").get()
 
             yield{
-                "company": company,
+                "Company": company,
                 # remove \n (newline characters) (and other unwanted whitespace) using .strip()
-                "job_title": job_title.strip() if job_title else None,
-                "location": location.strip() if location else None,
-                "link": response.urljoin(link),
+                "Job_title": job_title.strip() if job_title else None,
+                "Location": location.strip() if location else None,
+                "Link": response.urljoin(link),
             }

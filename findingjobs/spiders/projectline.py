@@ -32,7 +32,7 @@ class ProjectlineSpider(scrapy.Spider):
             yield scrapy.Request(
                 url=absolute_url,
                 callback=self.parse_link,
-                meta={"Company": company, "Job Title": job_title, "link": link},
+                meta={"Company": company, "Job_title": job_title, "link": link},
                 # Scrapy ignored a request because it had already visited that URL earlier in the crawl.
                 # This tells Scrapy: “Yes, even if you saw this URL before, crawl it again.”
                 dont_filter=True
@@ -41,7 +41,7 @@ class ProjectlineSpider(scrapy.Spider):
     # Getting data inside the "link" website
     def parse_link(self, response):
         company = response.request.meta["Company"]
-        job_title = response.request.meta["Job Title"]
+        job_title = response.request.meta["Job_title"]
         link = response.request.meta["link"]
         #the content is dynamically rendered by JavaScript (likely using Angular, judging by _ngcontent-*). Scrapy cannot see JavaScript-rendered content because it does not execute JavaScript.
         #so we need selenium here
@@ -63,7 +63,7 @@ class ProjectlineSpider(scrapy.Spider):
             location = driver.find_element(By.XPATH, "(//span[@id='icon-text-modal'])[1]").text
             yield {
                 "Company": company,
-                "Job Title": job_title,
+                "Job_title": job_title,
                 "Location": location,
                 "Link": link,
             }

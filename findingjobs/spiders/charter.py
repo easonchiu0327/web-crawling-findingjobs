@@ -61,10 +61,10 @@ class CharterSpider(scrapy.Spider):
                 link = job.xpath('./li[@class="position-actions"]/a/@href').get()
 
                 yield {
-                    "company": company,
-                    "Job title": job_title,
-                    "location": location,
-                    "link": urljoin(self.start_urls[0], link),  # Convert relative link to full URL
+                    "Company": company,
+                    "Job_title": job_title,
+                    "Location": location,
+                    "Link": urljoin(self.start_urls[0], link),  # Convert relative link to full URL
                 }
         except Exception as e:
             self.logger.error(f"Dropdown interaction failed: {e}")

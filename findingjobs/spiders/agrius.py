@@ -15,9 +15,9 @@ class AgriusSpider(scrapy.Spider):
             link = job.xpath("./a/@href").get()
 
             yield{
-                "company": company,
+                "Company": company,
                 #\xa0 is the non-breaking space (NBSP).
-                "job_title": job_title.replace('\xa0', ' ').strip() if job_title else None,
-                "location": location,
-                "link": link,
+                "Job_title": job_title.replace('\xa0', ' ').strip() if job_title else None,
+                "Location": location,
+                "Link": link,
             }
