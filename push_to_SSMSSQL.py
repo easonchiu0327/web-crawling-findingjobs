@@ -27,6 +27,9 @@ def push_json_to_ssms():
 
     conn = pyodbc.connect(conn_str)
     cursor = conn.cursor()
+    # Clear the table and reset IDENTITY to 1
+    # If your table ever has foreign key constraints, TRUNCATE won’t work — then you’d have to use DELETE + DBCC CHECKIDENT.
+    cursor.execute(f"TRUNCATE TABLE {table}")
 
     # Step 3: Load and insert JSON data
     with open(latest_file, encoding='utf-8') as f:

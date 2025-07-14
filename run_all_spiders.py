@@ -11,7 +11,7 @@ def run_spiders():
     output_dir = "output"
     os.makedirs(output_dir, exist_ok=True)  # create dir if not exist
     # Get current time string (e.g., 2025-07-14_01-30-00)
-    timestamp = datetime.now().strftime("%Y/%m/%d_%H-%M")
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
     process = CrawlerProcess(settings={
         # The FEEDS setting tells Scrapy where and how to save the scraped data.
         "FEEDS": {
