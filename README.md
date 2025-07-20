@@ -17,5 +17,8 @@ Or run all spiders on terminal:
 ```bash
 python run_all_spiders.py
 ```
+# ⚠️ Disclaimer
+This project is for educational use only. 
+Always review and respect the robots.txt and terms of service of any website you scrape.
 
 
