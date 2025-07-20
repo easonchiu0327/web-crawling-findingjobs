@@ -8,4 +8,14 @@ This project is a simple web scraping bot, combinding Scrapy and Selenium that c
 - Includes a script to push data to SQL Server
 - Easy to extend with more spiders
 
+# How to run
+Run a specific spider on terminal:
+```bash
+scrapy crawl spider_name
+```
+Or
+```bash
+python run_all_spiders.py
+```
+
 
