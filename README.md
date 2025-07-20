@@ -21,4 +21,4 @@ python run_all_spiders.py
 This project is for educational use only. 
 Always review and respect the robots.txt and terms of service of any website you scrape.
 
-
+⚠️ **Note:** This project attempts to collect IT-related job postings, but due to inconsistencies on job boards, some non-IT roles may appear in the results. I will figure it out and slove this issue in the furure.
