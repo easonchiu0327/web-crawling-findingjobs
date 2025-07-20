@@ -13,7 +13,7 @@ Run a specific spider on terminal:
 ```bash
 scrapy crawl spider_name
 ```
-Or
+Or run all spiders on terminal:
 ```bash
 python run_all_spiders.py
 ```
