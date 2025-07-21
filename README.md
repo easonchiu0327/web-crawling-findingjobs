@@ -3,9 +3,9 @@
 This project is a simple web scraping bot, combining Scrapy and Selenium that collects job listings from multiple websites and save them into a SQL Server database.
 
 # Features
-- 1. Scrapes job postings from various companies
-- 2. Outputs results into a SQL Server database
-- 3. Easy to extend with more spiders
+- Scrapes job postings from various companies
+- Outputs results into a SQL Server database
+- Easy to extend with more spiders
 
 # How to run
 Run a specific spider on terminal:
