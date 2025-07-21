@@ -31,13 +31,13 @@ This project uses both **Scrapy** and **Selenium** to handle different types of 
 #### Key Points:
 
 - **Handling Dynamic Filters/Categories/Label with JavaScript Clicks**
-- In some job boards, filters/categories/labels (e.g., by location or department) are rendered dynamically and require user interaction to apply. Standard `.click()` methods in Selenium often fail due to overlays, animations, or incomplete rendering. To solve this, the spider uses **JavaScript-based clicking** with `driver.execute_script()`.
+In some job boards, filters/categories/labels (e.g., by location or department) are rendered dynamically and require user interaction to apply. Standard `.click()` methods in Selenium often fail due to overlays, animations, or incomplete rendering. To solve this, the spider uses **JavaScript-based clicking** with `driver.execute_script()`.
 
 - **Scrapy Selector for Parsing**
-- Once the page is rendered, Scrapy's `Selector` is used to parse HTML using XPath, instead of BeautifulSoup.
+Once the page is rendered, Scrapy's `Selector` is used to parse HTML using XPath, instead of BeautifulSoup.
 
 - **XPath for Extraction**
-- XPath expressions are used to target job titles, locations, and links.
+XPath expressions are used to target job titles, locations, and links.
 
 - **Extracting Data Using `yield`**
 Using **yield** to return extracted data **one item at a time** from our spider. This is different from `return`, which ends the function immediately
