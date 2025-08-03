@@ -57,4 +57,4 @@ This project is for educational use only.
 Always review and respect the robots.txt and terms of service of any website you scrape.
 
 # ⚠️ **Note:** 
-This project attempts to collect IT-related job postings, but due to inconsistencies on job boards, Some non-IT roles may appear due to job board inconsistencies. I plan to address this issue in the future..
+This project attempts to collect IT-related job postings, some non-IT roles may appear due to inconsistencies on job boards. I plan to address this issue in the future.
