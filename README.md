@@ -23,9 +23,11 @@ This project uses both **Scrapy** and **Selenium** to handle different types of 
 
 ### Strategy Overview
 
-- **1. Scrapy** is used for websites where job postings are in the static HTML.
-- **2. Selenium** is used for sites that load content dynamically with JavaScript.
-- **3. Selenium + Scrapy.Selector** is used for scraping job data from a JavaScript-powered page.
+**1. Scrapy** is used for websites where job postings are in the static HTML.
+
+**2. Selenium** is used for sites that load content dynamically with JavaScript.
+
+**3. Selenium + Scrapy.Selector** is used for scraping job data from a JavaScript-powered page.
 
 #### Key Points:
 
@@ -40,6 +42,15 @@ This project uses both **Scrapy** and **Selenium** to handle different types of 
 
 **4. Extracting Data Using `yield`**
 - Using **yield** to return extracted data **one item at a time** from our spider. This is different from `return`, which ends the function immediately
+
+# Result demo
+### jsonl file
+<img width="1603" height="882" alt="image" src="https://github.com/user-attachments/assets/fb98b0c2-b4d8-4658-821b-ab27030bd655" />
+
+### SQL
+<img width="1427" height="863" alt="image" src="https://github.com/user-attachments/assets/07f8ccb6-e117-4bcb-b14c-3dd88eb56bb8" />
+
+
 
 # ⚠️ **Disclaimer**
 This project is for educational use only. 
