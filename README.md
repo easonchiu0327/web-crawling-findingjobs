@@ -1,13 +1,13 @@
 # Saskatchewan IT Job Scraper
 
-This project is a simple web scraping bot, combining Scrapy and Selenium that collects job listings from multiple websites and save them into a SQL Server database.
+This project is a simple web scraping bot, combining **Scrapy** and **Selenium** that collects job listings from multiple websites and save them into a **SQL** Server database.
 
-# Features
+## Features
 - Scrapes job postings from various companies
 - Outputs results into a SQL Server database
 - Easy to extend with more spiders
 
-# How to run
+## How to run
 Run a specific spider on terminal:
 ```bash
 scrapy crawl spider_name
@@ -17,44 +17,46 @@ Or run all spiders on terminal:
 python run_all_spiders.py
 ```
 
-## Implementation Details
+## Strategy Overview
 
-This project uses both **Scrapy** and **Selenium** to handle different types of job websites, depending on how the job data is loaded.
+1. Scrapy is used for websites where job postings are in the static HTML.
 
-### Strategy Overview
+2. Selenium is used for sites that load content dynamically with JavaScript.
 
-**1. Scrapy** is used for websites where job postings are in the static HTML.
+3. Selenium + Scrapy.Selector is used for scraping job data from a JavaScript-powered page.
 
-**2. Selenium** is used for sites that load content dynamically with JavaScript.
+## Key Points:
 
-**3. Selenium + Scrapy.Selector** is used for scraping job data from a JavaScript-powered page.
+1. Handling Dynamic Filters/Categories/Label with JavaScript Clicks
+   
+    In some job boards, filters/categories/labels (e.g., by location or department) are rendered dynamically and require user interaction to apply. Standard `.click()` methods in Selenium often fail due to overlays, animations, or incomplete rendering. To solve this, the spider uses **JavaScript-based clicking** with `driver.execute_script()`.
 
-#### Key Points:
+2. Scrapy Selector for Parsing
+   
+    Once the page is rendered, Scrapy's `Selector` is used to parse HTML using XPath, instead of BeautifulSoup.
 
-**1. Handling Dynamic Filters/Categories/Label with JavaScript Clicks**
-- In some job boards, filters/categories/labels (e.g., by location or department) are rendered dynamically and require user interaction to apply. Standard `.click()` methods in Selenium often fail due to overlays, animations, or incomplete rendering. To solve this, the spider uses **JavaScript-based clicking** with `driver.execute_script()`.
+3. XPath for Extraction
+   
+    XPath expressions are used to target job titles, locations, and links.
 
-**2. Scrapy Selector for Parsing**
-- Once the page is rendered, Scrapy's `Selector` is used to parse HTML using XPath, instead of BeautifulSoup.
+4. Extracting Data Using `yield`
+   
+    Using **yield** to return extracted data **one item at a time** from our spider. This is different from `return`, which ends the function immediately.
 
-**3. XPath for Extraction**
-- XPath expressions are used to target job titles, locations, and links.
-
-**4. Extracting Data Using `yield`**
-- Using **yield** to return extracted data **one item at a time** from our spider. This is different from `return`, which ends the function immediately
 
 # Result demo
-### jsonl file
+## jsonl file
 <img width="1603" height="882" alt="image" src="https://github.com/user-attachments/assets/fb98b0c2-b4d8-4658-821b-ab27030bd655" />
 
-### SQL
+## SQL
 <img width="1427" height="863" alt="image" src="https://github.com/user-attachments/assets/07f8ccb6-e117-4bcb-b14c-3dd88eb56bb8" />
 
+# Testing link
+https://colab.research.google.com/drive/1uemPB5HmvLIzSF3dtpm_e4jCEPshVXqF?usp=sharing
 
-
-# ⚠️ **Disclaimer**
+### ⚠️ **Disclaimer**
 This project is for educational use only. 
 Always review and respect the robots.txt and terms of service of any website you scrape.
 
-# ⚠️ **Note:** 
+### ⚠️ **Note:** 
 This project attempts to collect IT-related job postings, some non-IT roles may appear due to inconsistencies on job boards. I plan to address this issue in the future.
