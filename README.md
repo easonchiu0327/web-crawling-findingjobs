@@ -2,6 +2,16 @@
 
 This project is a simple web scraping bot, combining **Scrapy** and **Selenium** that collects job listings from multiple websites and save them into a **SQL** Server database.
 
+# Result demo
+## jsonl file
+<img width="1603" height="882" alt="image" src="https://github.com/user-attachments/assets/fb98b0c2-b4d8-4658-821b-ab27030bd655" />
+
+## SQL
+<img width="1427" height="863" alt="image" src="https://github.com/user-attachments/assets/07f8ccb6-e117-4bcb-b14c-3dd88eb56bb8" />
+
+# Testing link
+[Vendasta's spider demo](https://colab.research.google.com/drive/1uemPB5HmvLIzSF3dtpm_e4jCEPshVXqF?usp=sharing)
+
 ## Features
 - Scrapes job postings from various companies
 - Outputs results into a SQL Server database
@@ -42,17 +52,6 @@ python run_all_spiders.py
 4. Extracting Data Using `yield`
    
     Using **yield** to return extracted data **one item at a time** from our spider. This is different from `return`, which ends the function immediately.
-
-
-# Result demo
-## jsonl file
-<img width="1603" height="882" alt="image" src="https://github.com/user-attachments/assets/fb98b0c2-b4d8-4658-821b-ab27030bd655" />
-
-## SQL
-<img width="1427" height="863" alt="image" src="https://github.com/user-attachments/assets/07f8ccb6-e117-4bcb-b14c-3dd88eb56bb8" />
-
-# Testing link
-https://colab.research.google.com/drive/1uemPB5HmvLIzSF3dtpm_e4jCEPshVXqF?usp=sharing
 
 ### ⚠️ **Disclaimer**
 This project is for educational use only. 
