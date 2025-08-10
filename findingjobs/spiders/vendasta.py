@@ -44,6 +44,9 @@ class VendastaSpider(scrapy.Spider):
                 location = job.xpath("(.//p[@class='jss-g16'])[position() mod 2 = 1]/text()").get()
                 link = job.xpath(".//a/@href").get()
 
+                # If location is None, replace with "N/A"
+                if not location:
+                    location = "N/A"
                 yield{
                     "Company": company,
                     "Job_title": job_title,
