@@ -13,5 +13,13 @@ namespace web_crawling_findingjobs
         {
 
         }
+
+        protected void timerRandomJob_Tick(object sender, EventArgs e)
+        {
+            //called when timer ticks
+            odsJobs.Select();
+            // re-bind the ListView’s data source
+            grdRandomJob.DataBind();
+        }
     }
 }
