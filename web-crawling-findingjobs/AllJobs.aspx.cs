@@ -18,7 +18,7 @@ namespace web_crawling_findingjobs
         {
             //called when timer ticks
             odsJobs.Select();
-            // re-bind the ListView’s data source
+            // re-bind the gridview data source
             grdRandomJob.DataBind();
         }
     }

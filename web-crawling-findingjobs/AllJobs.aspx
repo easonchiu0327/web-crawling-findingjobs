@@ -26,9 +26,9 @@
                 <asp:BoundField DataField="CompanyName" HeaderText="CompanyName" SortExpression="CompanyName"></asp:BoundField>
                 <asp:BoundField DataField="JobTitle" HeaderText="JobTitle" SortExpression="JobTitle"></asp:BoundField>
                 <asp:BoundField DataField="Location" HeaderText="Location" SortExpression="Location"></asp:BoundField>
+                <%--add Target="_blank for opening in a new tab after click--%>
                 <asp:HyperLinkField DataNavigateUrlFields="Link" DataTextField="Link" Target="_blank" HeaderText="Link"></asp:HyperLinkField>
                 <asp:BoundField DataField="CreatedDate" HeaderText="CreatedDate" SortExpression="CreatedDate"></asp:BoundField>
-                <%--add Target="_blank for opening in a new tab after click--%>
             </Columns>
         </asp:GridView>
     </div>
@@ -52,7 +52,7 @@
                         <asp:BoundField DataField="CompanyName" HeaderText="CompanyName" SortExpression="CompanyName"></asp:BoundField>
                         <asp:BoundField DataField="JobTitle" HeaderText="JobTitle" SortExpression="JobTitle"></asp:BoundField>
                         <asp:BoundField DataField="Location" HeaderText="Location" SortExpression="Location"></asp:BoundField>
-                        <asp:BoundField DataField="Link" HeaderText="Link" SortExpression="Link"></asp:BoundField>
+                        <asp:HyperLinkField DataNavigateUrlFields="Link" DataTextField="Link" Target="_blank" HeaderText="Link"></asp:HyperLinkField>
                         <asp:BoundField DataField="CreatedDate" HeaderText="CreatedDate" SortExpression="CreatedDate"></asp:BoundField>
                     </Columns>
                 </asp:GridView>
