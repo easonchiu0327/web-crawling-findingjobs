@@ -12,6 +12,10 @@ This project is a simple web scraping bot, combining **Scrapy** and **Selenium**
 # Testing link
 [Vendasta's spider demo](https://colab.research.google.com/drive/1uemPB5HmvLIzSF3dtpm_e4jCEPshVXqF?usp=sharing)
 
+[7shifts's spider demo](https://colab.research.google.com/drive/1vZ4cIvEO-kjCf9qIlYFloHHh3evQ5RI7#scrollTo=xLYaMbypM3kD)
+This spider integrates the OpenAI API to analyze job description pages, extracting the job category, required skills, years of experience, and whether Canadian citizenship or permanent residency is required.
+
+
 ## Features
 - Scrapes job postings from various companies
 - Outputs results into a SQL Server database
