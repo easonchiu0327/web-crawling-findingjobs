@@ -21,6 +21,7 @@ def run_spiders():
     })
 
     # Add each spider to the process
+    # 14 spiders for now 2025/08/12
     process.crawl(shifts7.A7shiftsSpider)
     process.crawl(accenture.AccentureSpider)
     process.crawl(agrius.AgriusSpider)
