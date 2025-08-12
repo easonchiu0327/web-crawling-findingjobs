@@ -5,7 +5,7 @@ from push_to_SSMSSQL import push_json_to_ssms
 import os
 from datetime import datetime
 
-def run_spiders():
+def run_all_spiders():
     # === Scrapy Configuration ===
     # Define your output directory and filename
     output_dir = "output"
@@ -44,4 +44,4 @@ def run_spiders():
     push_json_to_ssms()
 
 if __name__ == "__main__":
-    run_spiders()
+    run_all_spiders()
