@@ -3,7 +3,7 @@ import json
 import pyodbc
 from glob import glob
 
-def push_json_to_ssms():
+def push_jsonl_to_ssms():
     # Step 1: Find the most recent JSONL file in the output directory
     output_dir = "output"
     json_files = glob(os.path.join(output_dir, "*.jsonl")) # Get all .jsonl files in the output dir
