@@ -13,6 +13,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, WebDriverException
 from dotenv import load_dotenv
+from push_to_SSMSSQL import push_jsonl_to_ssms
 
 #------------------------------------------------------------------------------------
 # DON'T FORGET TO REMOVE YOUR API KEY BEFORE SHARING THIS CODE
@@ -86,9 +87,9 @@ def analyze_job_description(link, driver):
         # --- Test the result
         text = text[:15000]
         # if page text is too short, skip the model call
-        #if len(text) < 150:
-            #print(f"---The text is too short, might be a problem from scraping {link}---")
-            #return {"Skills": "---None, due to a short text---", "Years": "---None, due to a short text---", "CitizenPR": "---None, due to a short text---"}
+        if len(text) < 150:
+            print(f"---The text is too short, might be a problem from scraping {link}---")
+            return {"Skills": "---None, due to a short text---", "Years": "---None, due to a short text---", "CitizenPR": "---None, due to a short text---"}
 
         # Ask OpenAI for compact, structured output (JSON)
         # using JSON when sending data to the API has two big benefits, Easier Parsing and Avoids Unnecessary Words(Save token)
@@ -224,4 +225,5 @@ def enrich_jobs_with_ai():
 
 if __name__ == "__main__":
     enrich_jobs_with_ai()
+    push_jsonl_to_ssms()
 
