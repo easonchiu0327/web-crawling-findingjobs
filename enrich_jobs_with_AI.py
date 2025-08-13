@@ -59,7 +59,7 @@ def build_driver():
 def analyze_job_description(link, driver):
     # --- If the link is empty or None, return blank values ---
     if not link:
-        print("There is not link to scrape")
+        print("---There is not link to scrape---")
         return {"Skills": "", "Years": "", "CitizenPR": ""}
     try:
         driver.get(link)
@@ -82,21 +82,21 @@ def analyze_job_description(link, driver):
         text = " ".join(
             t.strip() for t in sel.xpath("//main//text() | //article//text() | //body//text()").getall() if t.strip()
         )
-        # --- Cut the text if it's too long to save tokens ---
+        # --- Cut the text if exceeds the context window of this model. ---
         # --- Test the result
-        text = text[:12000]
+        text = text[:15000]
         # if page text is too short, skip the model call
-        if len(text) < 150:
-            print("The text is too short, might be a problem of scraping the text from link")
-            return {"Skills": "", "Years": "", "CitizenPR": ""}
+        #if len(text) < 150:
+            #print(f"---The text is too short, might be a problem from scraping {link}---")
+            #return {"Skills": "---None, due to a short text---", "Years": "---None, due to a short text---", "CitizenPR": "---None, due to a short text---"}
 
         # Ask OpenAI for compact, structured output (JSON)
         # using JSON when sending data to the API has two big benefits, Easier Parsing and Avoids Unnecessary Words(Save token)
         prompt = f"""
     You are a precise information extractor. Read the job description text below and return a STRICT JSON object with these keys:
-    - "Skills": short, comma-separated list of the top required skills (max 8 items)
-    - "Years": numeric years of experience required
-    - "CitizenPR": "Y" if Canadian citizenship or Canadian permanent residence is explicitly required, otherwise "N".
+    - "Skills": short, comma-separated list of the top required skills (max 8 items); if not clear, return "Not given""
+    - "Years": numeric years of experience required. (e.g., "1-2", "3+", "0", otherwise "Not given")
+    - "CitizenPR": "Y" if Canadian citizenship or Canadian permanent residence is explicitly required, otherwise "Not required".
 
     Return ONLY JSON, no commentary.
 
@@ -118,7 +118,9 @@ def analyze_job_description(link, driver):
         except Exception:
             # crude fallback: extract JSON block if any
             m = re.search(r"\{.*\}", json_data, re.S)
-            info = json.loads(m.group(0)) if m else {"Skills": "", "Years": "", "CitizenPR": ""}
+            info = json.loads(m.group(0)) if m else {"Skills": "---json.loads(json_data) failed---",
+                                                     "Years": "---json.loads(json_data) failed---",
+                                                     "CitizenPR": "---json.loads(json_data) failed---"}
 
         # Creates a brand-new dictionary — even if info already has these keys, Normalize missing keys
         return {
@@ -127,7 +129,7 @@ def analyze_job_description(link, driver):
             "CitizenPR": (info.get("CitizenPR") or "").strip()
         }
     except Exception as e:
-        print(f"There is problem of loading json{e}/n")
+        print(f"---There is problem of loading json. {e}/n---")
         return {"Skills": f"(err: {e})", "Years": f"(err: {e})", "CitizenPR": f"(err: {e})"}
 
 
@@ -142,7 +144,7 @@ def enrich_jobs_with_ai():
         if not os.path.basename(f).startswith("Enriched_Result_")
     ]
     if not jsonl_raw_files:
-        raise FileNotFoundError("No raw JSONL files found in the output directory.")
+        raise FileNotFoundError("---No raw JSONL files found in the output directory.---")
     # Pick the most recently modified file
     latest_raw_file = max(jsonl_raw_files, key=os.path.getctime)
     print(f"Using latest raw file: {latest_raw_file}")
@@ -150,7 +152,7 @@ def enrich_jobs_with_ai():
     with open(latest_raw_file, encoding="utf-8") as f:
         raw_result = [json.loads(line) for line in f if line.strip()] # skip blank lines
     if not raw_result:
-        raise ValueError("Latest JSONL file is empty.")
+        raise ValueError("---Latest JSONL file is empty.---")
 
     # --- Adding job categories ---
     # Create a list of job titles from the JSONL
@@ -195,6 +197,7 @@ def enrich_jobs_with_ai():
             out["Category"] = category.strip()  # Add categories to the job dictionary
             # Call analyze_job_description function here
             try:
+                print(f"Processing job: {out.get('Job_title', 'Unknown')} | Link: {out.get('Link', 'No link')}")
                 details = analyze_job_description(out.get("Link"), driver)
             except Exception as e:
                 details = {"Skills": f"(err: {e})", "Years": "", "CitizenPR": ""}
