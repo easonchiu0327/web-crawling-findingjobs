@@ -4,14 +4,18 @@ import pyodbc
 from glob import glob
 
 def push_jsonl_to_ssms():
-    # Step 1: Find the most recent JSONL file in the output directory
+    # Step 1: Find the most recent enriched JSONL file in the output directory
     output_dir = "output"
-    json_files = glob(os.path.join(output_dir, "*.jsonl")) # Get all .jsonl files in the output dir
+    # only pick enriched files
+    json_files = [
+        f for f in glob(os.path.join(output_dir, "*.jsonl"))
+        if os.path.basename(f).startswith("Enriched_Result_")
+    ]
     if not json_files:
-        raise FileNotFoundError("No JSONL files found in the output directory.")
+        raise FileNotFoundError("No enriched JSONL files found in the output directory.")
 
     latest_file = max(json_files, key=os.path.getctime) # Pick the most recently modified file
-    print(f"Using latest file: {latest_file}")
+    print(f"Using latest enriched file: {latest_file}")
 
     # Step 2: Setup SQL Server connection details
     server = 'LAPTOP-FLIH4Q2E' # Replace with your actual SQL Server name
@@ -26,9 +30,9 @@ def push_jsonl_to_ssms():
         f"DATABASE={database};"
         f"Trusted_Connection=yes;"
     )
+
     conn = None
     cursor = None
-
     try:
         # Establish the connection and create a cursor
         conn = pyodbc.connect(conn_str)
@@ -54,25 +58,31 @@ def push_jsonl_to_ssms():
             data = [json.loads(line) for line in f if line.strip()] # Read and decode each JSON line into a dictionary
 
         # Step 4: Insert each job record into the SQL Server table
+        inserted, failed = 0, 0
         for record in data:
-            cursor.execute(f"""
-                INSERT INTO {table} (Company, JobTitle, Location, Link, Category, Skills, Years, CitizenPR)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            record.get('Company'),
-                    record.get('Job_title'),
-                    record.get('Location'),
-                    record.get('Link'),
-                    record.get('Category'),
-                    record.get('Skills'),
-                    record.get('Years'),
-                    record.get('CitizenPR')
-            )
+            try:
+                cursor.execute(f"""
+                    INSERT INTO {table} (Company, JobTitle, Location, Category, Skills, Years, CitizenPR, Link)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                record.get('Company'),
+                        record.get('Job_title'),
+                        record.get('Location'),
+                        record.get('Category'),
+                        record.get('Skills'),
+                        record.get('Years'),
+                        record.get('CitizenPR'),
+                        record.get('Link')
+                )
+                inserted += 1
+            except Exception as e:
+                failed += 1
+                print(f"Row insert failed for Job_title={record.get('Job_title')}: {e}")
         # Commit changes
         conn.commit()
-        print("Enriched data has been inserted into SSMS successfully.")
+        print(f"Inserted {inserted} rows into SSMS successfully. Failed: {failed}")
     except Exception as e:
-        print(f"Enriched data was not inserted into SSMS successfully. {e}")
+        print(f"---Enriched data was not inserted into SSMS successfully---. {e}")
     # Clean up safely
     finally:
         if cursor is not None:
@@ -80,3 +90,5 @@ def push_jsonl_to_ssms():
         if conn is not None:
                 conn.close()
 
+if __name__ == "__main__":
+    push_jsonl_to_ssms()
