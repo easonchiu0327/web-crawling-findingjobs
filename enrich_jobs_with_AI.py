@@ -8,7 +8,12 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from scrapy.selector import Selector # Allows using XPath/Selectors on raw HTML like Scrapy
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException, WebDriverException
 from dotenv import load_dotenv
+from push_to_SSMSSQL import push_jsonl_to_ssms
 
 #------------------------------------------------------------------------------------
 # DON'T FORGET TO REMOVE YOUR API KEY BEFORE SHARING THIS CODE
@@ -23,42 +28,76 @@ category_model = "gpt-5-nano"
 job_description_model = "gpt-4o-mini"
 #------------------------------------------------------------------------------------
 
-# Get required skills, years and citizenPR
-def analyze_job_description(link):
-    # --- If the link is empty or None, return blank values ---
-    if not link:
-        return {"Skills": "", "Years": "", "CitizenPR": ""}
-    # set up selenium
-    # --- Setup Selenium Chrome Driver ---
-    # the path of where the chrome driver is
+# --- Build ONE shared driver and reuse it-faster
+def build_driver():
     path = r'C:\Users\eason\webscraping_online course\chromedriver-win64\chromedriver.exe'
     service = Service(executable_path=path)
     options = Options()
     options.add_argument("--window-size=1920x1080")
     options.add_argument("--headless=new")
-    driver = webdriver.Chrome(service=service, options=options)
+    options.add_argument("--disable-gpu")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-background-networking")
+    options.add_argument("--disable-sync")
+    options.add_argument("--metrics-recording-only")
+    options.add_argument("--disable-default-apps")
+    options.add_argument("--no-first-run")
+    options.add_argument("--disable-notifications")
+    # Block images to cut bandwidth
+    options.add_experimental_option("prefs", {
+        "profile.managed_default_content_settings.images": 2
+    })
+    # Stop waiting for full load (wait only for DOMContentLoaded)
+    options.page_load_strategy = "eager"
 
+    driver = webdriver.Chrome(service=service, options=options)
+    driver.set_page_load_timeout(15)      # fail fast on slow pages
+    driver.set_script_timeout(10)
+    return driver
+
+# Get required skills, years and citizenPR
+def analyze_job_description(link, driver):
+    # --- If the link is empty or None, return blank values ---
+    if not link:
+        print("---There is not link to scrape---")
+        return {"Skills": "", "Years": "", "CitizenPR": ""}
     try:
         driver.get(link)
-        time.sleep(5)
+        try:
+            # use wait instead of sleep
+            WebDriverWait(driver, 10).until(
+                EC.any_of(
+                    EC.presence_of_element_located((By.TAG_NAME, "main")),
+                    EC.presence_of_element_located((By.TAG_NAME, "article")),
+                    EC.presence_of_element_located((By.TAG_NAME, "body"))
+                )
+            )
+        except (TimeoutException, WebDriverException) as e:
+            pass  # parse whatever we have
+            print(f"wait failed: {e}")
         sel = Selector(text=driver.page_source)
 
-        # --- Extract all text from <main> or <article> (where job description usually is) ---
+        # --- Extract all text from <main>, <article> or <body>(where job description usually is) ---
         # Most OpenAI's models expect a single string prompt, not a list, so we need to join a space between string by using " ".join
         text = " ".join(
-            t.strip() for t in sel.xpath("//main//text() | //article//text()").getall() if t.strip()
+            t.strip() for t in sel.xpath("//main//text() | //article//text() | //body//text()").getall() if t.strip()
         )
-        # --- Cut the text if it's too long to save tokens ---
+        # --- Cut the text if exceeds the context window of this model. ---
         # --- Test the result
-        text = text[:12000]
+        text = text[:15000]
+        # if page text is too short, skip the model call
+        if len(text) < 150:
+            print(f"---The text is too short, might be a problem from scraping {link}---")
+            return {"Skills": "---None, due to a short text---", "Years": "---None, due to a short text---", "CitizenPR": "---None, due to a short text---"}
 
         # Ask OpenAI for compact, structured output (JSON)
         # using JSON when sending data to the API has two big benefits, Easier Parsing and Avoids Unnecessary Words(Save token)
         prompt = f"""
     You are a precise information extractor. Read the job description text below and return a STRICT JSON object with these keys:
-    - "Skills": short, comma-separated list of the top required skills (max 8 items)
-    - "Years": numeric years of experience required
-    - "CitizenPR": "Y" if Canadian citizenship or Canadian permanent residence is explicitly required, otherwise "N".
+    - "Skills": short, comma-separated list of the top required skills (max 8 items); if not clear, return "Not given""
+    - "Years": numeric years of experience required. (e.g., "1-2", "3+", "0", otherwise "Not given")
+    - "CitizenPR": "Y" if Canadian citizenship or Canadian permanent residence is explicitly required, otherwise "Not required".
 
     Return ONLY JSON, no commentary.
 
@@ -74,41 +113,47 @@ def analyze_job_description(link):
 
         # Try to parse JSON; if model adds extra text, we still try to recover
         # converts the text into a Python dictionary
+        import json, re
         try:
             info = json.loads(json_data)
-            # Creates a brand new dictionary — even if info already has these keys, Normalize missing keys
-            return {
-                "Skills": (info.get("Skills") or "").strip(),
-                "Years": (info.get("Years") or "").strip(),
-                "CitizenPR": (info.get("CitizenPR") or "").strip()
-            }
-        except Exception as e:
-            print(e)
-            # Fallback if the model didn’t return strict JSON
-            return {"Skills": "", "Years": "", "CitizenPR": ""}
+        except Exception:
+            # crude fallback: extract JSON block if any
+            m = re.search(r"\{.*\}", json_data, re.S)
+            info = json.loads(m.group(0)) if m else {"Skills": "---json.loads(json_data) failed---",
+                                                     "Years": "---json.loads(json_data) failed---",
+                                                     "CitizenPR": "---json.loads(json_data) failed---"}
 
-
+        # Creates a brand-new dictionary — even if info already has these keys, Normalize missing keys
+        return {
+            "Skills": (info.get("Skills") or "").strip(),
+            "Years": str(info.get("Years") or "").strip(), # safe for int
+            "CitizenPR": (info.get("CitizenPR") or "").strip()
+        }
     except Exception as e:
+        print(f"---There is problem of loading json. {e}/n---")
         return {"Skills": f"(err: {e})", "Years": f"(err: {e})", "CitizenPR": f"(err: {e})"}
-    finally:
-        driver.quit()
 
 
 def enrich_jobs_with_ai():
     # -- load the lasted file before enrich ---
     output_dir = "output"
-    # Get all .jsonl files in the output dir
-    json_files = glob(os.path.join(output_dir, "*.jsonl"))
-    if not json_files:
-        raise FileNotFoundError("No JSONL files found in the output directory.")
+    os.makedirs(output_dir, exist_ok=True)  # create dir if not exist
+    # Get all .jsonl files in the output dir that are "raw" (not previously enriched results)
+    # skip any file whose name starts with "Enriched_Result_
+    jsonl_raw_files = [
+        f for f in glob(os.path.join(output_dir, "*.jsonl"))
+        if not os.path.basename(f).startswith("Enriched_Result_")
+    ]
+    if not jsonl_raw_files:
+        raise FileNotFoundError("---No raw JSONL files found in the output directory.---")
     # Pick the most recently modified file
-    latest_file = max(json_files, key=os.path.getctime)
-    print(f"Using latest file: {latest_file}")
+    latest_raw_file = max(jsonl_raw_files, key=os.path.getctime)
+    print(f"Using latest raw file: {latest_raw_file}")
     # Read the file
-    with open(latest_file, encoding="utf-8") as f:
-        raw_result = [json.loads(line) for line in f]
+    with open(latest_raw_file, encoding="utf-8") as f:
+        raw_result = [json.loads(line) for line in f if line.strip()] # skip blank lines
     if not raw_result:
-        raise ValueError("Latest JSONL file is empty.")
+        raise ValueError("---Latest JSONL file is empty.---")
 
     # --- Adding job categories ---
     # Create a list of job titles from the JSONL
@@ -141,33 +186,44 @@ def enrich_jobs_with_ai():
     except Exception as e:
         print(f"OpenAI error while tagging: {e}")
         categories = ["(OpenAI error)"] * len(jobs_title)
-    # Merge Categories
-    enriched_data = []
-    for raw, category in zip(raw_result, categories):
-        out = dict(raw)  # copy so we don't mutate original
-        out["Category"] = category.strip()  # Add categories to the job dictionary
-        # Call analyze_job_description function here
-        try:
-            details = analyze_job_description(out.get("Link"))
-        except Exception as e:
-            details = {"Skills": f"(err: {e})", "Years": "", "CitizenPR": ""}
-        # Merge these details into the existing job dictionary
-        out.update(details)
-        enriched_data.append(out)
-        # ---- rate limit per-page AI analysis & page fetch ----
-        time.sleep(0.3)
+
+    # ------Merge Categories-------
+
+    # build and reuse one driver for all jobs-faster
+    driver = build_driver()
+    try:
+        enriched_data = []
+        for raw, category in zip(raw_result, categories):
+            out = dict(raw)  # copy so we don't mutate original
+            out["Category"] = category.strip()  # Add categories to the job dictionary
+            # Call analyze_job_description function here
+            try:
+                print(f"Processing job: {out.get('Job_title', 'Unknown')} | Link: {out.get('Link', 'No link')}")
+                details = analyze_job_description(out.get("Link"), driver)
+            except Exception as e:
+                details = {"Skills": f"(err: {e})", "Years": "", "CitizenPR": ""}
+            # Merge these details into the existing job dictionary
+            out.update(details)
+            enriched_data.append(out)
+            # ---- rate limit per-page AI analysis & page fetch ----
+            time.sleep(0.2)
+    finally:
+        driver.quit() # quit driver here at once
 
     # Output enriched files
-    os.makedirs(output_dir, exist_ok=True)  # create dir if not exist
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M")
-    jsonl_path = os.path.join(output_dir, f"Enriched_Result_{timestamp}.jsonl")
+    enriched_path = os.path.join(output_dir, f"Enriched_Result_{timestamp}.jsonl")
     try:
-        with open(jsonl_path, "w", encoding="utf-8") as f:
+        with open(enriched_path, "w", encoding="utf-8") as f:
             for rec in enriched_data:
                 f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+            print(
+                f"Enriched JSONL: {enriched_path}, category_model={category_model}, job_description_model={job_description_model}")
     except Exception as e:
-        print(e)
+        print(f"Failed to write enriched file: {e}")
+    return enriched_path
 
-    print(f"Enriched JSONL: {jsonl_path}, category_model={category_model}, job_description_model={job_description_model}")
-    return jsonl_path
+if __name__ == "__main__":
+    enrich_jobs_with_ai()
+    push_jsonl_to_ssms()
 
