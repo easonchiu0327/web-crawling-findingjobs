@@ -59,12 +59,13 @@ def build_driver():
 def analyze_job_description(link, driver):
     # --- If the link is empty or None, return blank values ---
     if not link:
+        print("There is not link to scrape")
         return {"Skills": "", "Years": "", "CitizenPR": ""}
     try:
         driver.get(link)
         try:
             # use wait instead of sleep
-            WebDriverWait(driver, 6).until(
+            WebDriverWait(driver, 10).until(
                 EC.any_of(
                     EC.presence_of_element_located((By.TAG_NAME, "main")),
                     EC.presence_of_element_located((By.TAG_NAME, "article")),
@@ -84,6 +85,10 @@ def analyze_job_description(link, driver):
         # --- Cut the text if it's too long to save tokens ---
         # --- Test the result
         text = text[:12000]
+        # if page text is too short, skip the model call
+        if len(text) < 150:
+            print("The text is too short, might be a problem of scraping the text from link")
+            return {"Skills": "", "Years": "", "CitizenPR": ""}
 
         # Ask OpenAI for compact, structured output (JSON)
         # using JSON when sending data to the API has two big benefits, Easier Parsing and Avoids Unnecessary Words(Save token)
@@ -107,19 +112,22 @@ def analyze_job_description(link, driver):
 
         # Try to parse JSON; if model adds extra text, we still try to recover
         # converts the text into a Python dictionary
+        import json, re
         try:
             info = json.loads(json_data)
-            # Creates a brand-new dictionary — even if info already has these keys, Normalize missing keys
-            return {
-                "Skills": (info.get("Skills") or "").strip(),
-                "Years": str(info.get("Years") or "").strip(), # safe for int
-                "CitizenPR": (info.get("CitizenPR") or "").strip()
-            }
-        except Exception as e:
-            print(e)
-            # Fallback if the model didn’t return strict JSON
-            return {"Skills": "", "Years": "", "CitizenPR": ""}
+        except Exception:
+            # crude fallback: extract JSON block if any
+            m = re.search(r"\{.*\}", json_data, re.S)
+            info = json.loads(m.group(0)) if m else {"Skills": "", "Years": "", "CitizenPR": ""}
+
+        # Creates a brand-new dictionary — even if info already has these keys, Normalize missing keys
+        return {
+            "Skills": (info.get("Skills") or "").strip(),
+            "Years": str(info.get("Years") or "").strip(), # safe for int
+            "CitizenPR": (info.get("CitizenPR") or "").strip()
+        }
     except Exception as e:
+        print(f"There is problem of loading json{e}/n")
         return {"Skills": f"(err: {e})", "Years": f"(err: {e})", "CitizenPR": f"(err: {e})"}
 
 
@@ -140,7 +148,7 @@ def enrich_jobs_with_ai():
     print(f"Using latest raw file: {latest_raw_file}")
     # Read the file
     with open(latest_raw_file, encoding="utf-8") as f:
-        raw_result = [json.loads(line) for line in f]
+        raw_result = [json.loads(line) for line in f if line.strip()] # skip blank lines
     if not raw_result:
         raise ValueError("Latest JSONL file is empty.")
 
