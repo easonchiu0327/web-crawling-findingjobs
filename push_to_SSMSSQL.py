@@ -65,14 +65,14 @@ def push_jsonl_to_ssms():
                     INSERT INTO {table} (Company, JobTitle, Location, Category, Skills, Years, CitizenPR, Link)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 """,
-                record.get('Company'),
-                        record.get('Job_title'),
-                        record.get('Location'),
-                        record.get('Category'),
-                        record.get('Skills'),
-                        record.get('Years'),
-                        record.get('CitizenPR'),
-                        record.get('Link')
+                record.get('Company').strip(),
+                        record.get('Job_title').strip(),
+                        record.get('Location').strip(),
+                        record.get('Category').strip(),
+                        record.get('Skills').strip(),
+                        record.get('Years').strip(),
+                        record.get('CitizenPR').strip(),
+                        record.get('Link').strip()
                 )
                 inserted += 1
             except Exception as e:
