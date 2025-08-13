@@ -1,7 +1,8 @@
 from scrapy.crawler import CrawlerProcess
 # import all your spider classes
 from findingjobs.spiders import shifts7, accenture, agrius, charter, firsttecpro, horizon, ibits, opensail, projectline, pushinteractions, sasksoftware, univerus, vendasta, wbm
-from push_to_SSMSSQL import push_json_to_ssms
+from push_to_SSMSSQL import push_jsonl_to_ssms
+from enrich_jobs_with_AI import enrich_jobs_with_ai
 import os
 from datetime import datetime
 
@@ -40,8 +41,11 @@ def run_all_spiders():
     # === Run the spiders ===
     process.start()
 
+    # === Run the enrich_job ===
+    enrich_jobs_with_ai()
+
     # === Insert into SQL Server ===
-    push_json_to_ssms()
+    push_jsonl_to_ssms()
 
 if __name__ == "__main__":
     run_all_spiders()
