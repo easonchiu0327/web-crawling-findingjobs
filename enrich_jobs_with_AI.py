@@ -104,7 +104,7 @@ def analyze_job_description(link, driver):
     Job Description:
     {text}
     """.strip()
-
+        # Send the request to OpenAI
         resp = client.responses.create(
             model=job_description_model,
             input=prompt
