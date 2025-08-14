@@ -95,7 +95,7 @@ For each job detail page, it uses Selenium to load and extract the main body tex
 
    - Job Description Analysis: Each job description is processed individually because it requires navigating to the job’s detail page and analyzing the unique content.
 
-   - This enrichment uses OpenAI’s text-generation API via the responses.create() method:
+   - This enrichment uses OpenAI’s text-generation API via the responses.create() method: (more detail at [Text generation OpenAI API](https://platform.openai.com/docs/guides/text))
    ```python
    from openai import OpenAI
    client = OpenAI()
@@ -107,6 +107,7 @@ For each job detail page, it uses Selenium to load and extract the main body tex
 
    print(response.output_text)
    ```
+
 
 7. SQL Server Storage
 
