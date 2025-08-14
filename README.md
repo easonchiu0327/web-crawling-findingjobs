@@ -165,9 +165,9 @@ python push_to_SSMSSQL.py
 ```
 
 ### ⚠️ **Disclaimer**
-This project is for educational use only. 
-
-Always review and respect the robots.txt and terms of service of any website you scrape.
+- This project is for educational use only. 
+- Always review and respect the robots.txt and terms of service of any website you scrape.
+- AI output can be wrong, please verify on the original posting.
 
 ### ⚠️ **Note:** 
 This project attempts to collect IT-related job postings, some non-IT roles may appear due to inconsistencies on job boards.
