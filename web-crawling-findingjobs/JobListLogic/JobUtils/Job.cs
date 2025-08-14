@@ -11,18 +11,26 @@ namespace web_crawling_findingjobs.JobListLogic.JobUtils
         private string companyName;
         private string jobTitle;
         private string location;
+        private string category;
+        private string skills;
+        private string years;
+        private string citizenPR;
         private string link;
-        private DateTime createdDate;
+        
 
         // For Selecting all Jobs
-        public Job(int id, string companyName, string jobTitle, string location, string link, DateTime createdDate)
+        public Job(int id, string companyName, string jobTitle, string location, string category, string skills, string years, string citizenPR, string link)
         {
             this.id = id;
             this.companyName = companyName;
             this.jobTitle = jobTitle;
             this.location = location;
+            this.category = category;
+            this.skills = skills;
+            this.years = years;
+            this.citizenPR = citizenPR;
             this.link = link;
-            this.createdDate = createdDate;
+            
         }
 
         //Property Accessors
@@ -30,8 +38,11 @@ namespace web_crawling_findingjobs.JobListLogic.JobUtils
         public string CompanyName { get => companyName; set => companyName = value; }
         public string JobTitle { get => jobTitle; set => jobTitle = value; }
         public string Location { get => location; set => location = value; }
+        public string Category { get => category; set => category = value; }
+        public string Skills { get => skills;   set => skills = value; }
+        public string Years { get => years; set => years = value; }
+        public string CitizePR { get => citizenPR; set => citizenPR = value; }
         public string Link { get => link; set => link = value; }
-        public DateTime CreatedDate { get => createdDate; set => createdDate = value; }
     }
 
 

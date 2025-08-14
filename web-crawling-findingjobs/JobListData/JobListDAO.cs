@@ -20,7 +20,7 @@ namespace web_crawling_findingjobs.JobListData
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = "SELECT Id, Company, JobTitle, Location, Link, CreatedAt FROM JobListings";
+            cmd.CommandText = "SELECT * FROM JobListings";
             using (conn)
             {
                 conn.Open();
@@ -34,8 +34,11 @@ namespace web_crawling_findingjobs.JobListData
                             (string)reader["Company"],
                             (string)reader["JobTitle"],
                             (string)reader["Location"],
-                            (string)reader["Link"],
-                            (DateTime)reader["CreatedAt"]
+                            (string)reader["Category"],
+                            (string)reader["Skills"],
+                            (string)reader["Years"],
+                            (string)reader["CitizenPR"],
+                            (string)reader["Link"]
                         ));
                 }
                 conn.Close();
@@ -67,8 +70,11 @@ namespace web_crawling_findingjobs.JobListData
                             (string)reader["Company"],
                             (string)reader["JobTitle"],
                             (string)reader["Location"],
-                            (string)reader["Link"],
-                            (DateTime)reader["CreatedAt"]
+                            (string)reader["Category"],
+                            (string)reader["Skills"],
+                            (string)reader["Years"],
+                            (string)reader["CitizenPR"],
+                            (string)reader["Link"]
                         ));
                 }
                 conn.Close();

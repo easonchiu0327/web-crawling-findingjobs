@@ -51,13 +51,13 @@ namespace web_crawling_findingjobs
         protected global::System.Web.UI.UpdatePanel updatePanelRandomJob;
 
         /// <summary>
-        /// odsJobsRandom control.
+        /// odjJobsRandom control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ObjectDataSource odsJobsRandom;
+        protected global::System.Web.UI.WebControls.ObjectDataSource odjJobsRandom;
 
         /// <summary>
         /// grdRandomJob control.
