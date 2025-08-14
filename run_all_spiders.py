@@ -17,7 +17,6 @@ def run_all_spiders():
         # The FEEDS setting tells Scrapy where and how to save the scraped data.
         "FEEDS": {
             os.path.join(output_dir, f"Result_{timestamp}.jsonl"): {"format": "jsonlines"},
-            os.path.join(output_dir, f"Result_{timestamp}.csv"): {"format": "csv"},
         },
     })
 
