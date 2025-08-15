@@ -62,12 +62,16 @@ def push_jsonl_to_ssms():
         for record in data:
             try:
                 # --- Company ---
+                # Check if the company already exists in the Company table
                 cursor.execute("SELECT Company_id FROM Company WHERE name = ?", record.get('Company', '').strip())
                 row = cursor.fetchone()
+                # If found, reuse its existing ID (avoid duplicates & wasted IDs)
                 if row:
                     company_id = row[0]
+                # If not found, insert it and get the new ID
                 else:
                     cursor.execute("INSERT INTO Company (name) VALUES (?)", record.get('Company', '').strip())
+                    # SCOPE_IDENTITY() returns the last identity value inserted in this session
                     cursor.execute("SELECT SCOPE_IDENTITY()")
                     company_id = cursor.fetchone()[0]
 
