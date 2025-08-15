@@ -14,7 +14,7 @@ namespace web_crawling_findingjobs.JobListLogic.JobUtils
         public List<Job> SellectALL()
         {
             JobListDAO jobListDAO = new JobListDAO();
-            return jobListDAO.JobSellectAll();
+            return jobListDAO.JobSelectAll();
         }
 
         // for random sellect
@@ -22,7 +22,7 @@ namespace web_crawling_findingjobs.JobListLogic.JobUtils
         {
             int rand = new Random().Next(98) + 1;///?????
             JobListDAO jobListDAO = new JobListDAO();
-            return jobListDAO.JobRandomSellect(rand);
+            return jobListDAO.JobRandomSelect(rand);
         }
     }
 }

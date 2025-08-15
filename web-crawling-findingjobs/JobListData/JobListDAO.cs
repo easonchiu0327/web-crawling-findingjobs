@@ -11,7 +11,7 @@ namespace web_crawling_findingjobs.JobListData
 {
     public class JobListDAO
     {
-        public List<Job> JobSellectAll()
+        public List<Job> JobSelectAll()
         {
             List<Job> jobList = new List<Job>();
             // Directly get the connection string from Web.config
@@ -46,7 +46,7 @@ namespace web_crawling_findingjobs.JobListData
             return jobList;
         }
 
-        public List<Job> JobRandomSellect(int rand)
+        public List<Job> JobRandomSelect(int rand)
         {
             List<Job> jobList = new List<Job>();
             // Directly get the connection string from Web.config
@@ -81,5 +81,7 @@ namespace web_crawling_findingjobs.JobListData
             }
             return jobList;
         }
+
+
     }
 }
