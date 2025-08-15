@@ -57,23 +57,56 @@ def push_jsonl_to_ssms():
         with open(latest_file, encoding='utf-8') as f:
             data = [json.loads(line) for line in f if line.strip()] # Read and decode each JSON line into a dictionary
 
-        # Step 4: Insert each job record into the SQL Server table
+        # Step 4: Insert each job record into the SQL Server table (normalized version)
         inserted, failed = 0, 0
         for record in data:
             try:
+                # --- Company ---
+                cursor.execute("SELECT Company_id FROM Company WHERE name = ?", record.get('Company', '').strip())
+                row = cursor.fetchone()
+                if row:
+                    company_id = row[0]
+                else:
+                    cursor.execute("INSERT INTO Company (name) VALUES (?)", record.get('Company', '').strip())
+                    cursor.execute("SELECT SCOPE_IDENTITY()")
+                    company_id = cursor.fetchone()[0]
+
+                # --- Category ---
+                cursor.execute("SELECT Category_id FROM Category WHERE category = ?",
+                               record.get('Category', '').strip())
+                row = cursor.fetchone()
+                if row:
+                    category_id = row[0]
+                else:
+                    cursor.execute("INSERT INTO Category (category) VALUES (?)", record.get('Category', '').strip())
+                    cursor.execute("SELECT SCOPE_IDENTITY()")
+                    category_id = cursor.fetchone()[0]
+
+                # --- citizenPR ---
+                cursor.execute("SELECT CitizenPR_id FROM CitizenPR WHERE CitizenPR = ?",
+                               record.get('CitizenPR', '').strip())
+                row = cursor.fetchone()
+                if row:
+                    citizenPR_id = row[0]
+                else:
+                    cursor.execute("INSERT INTO citizenPR (citizenPR) VALUES (?)", record.get('CitizenPR', '').strip())
+                    cursor.execute("SELECT SCOPE_IDENTITY()")
+                    citizenPR_id = cursor.fetchone()[0]
+
+                # --- Insert Job ---
                 cursor.execute(f"""
-                    INSERT INTO {table} (Company, JobTitle, Location, Category, Skills, Years, CitizenPR, Link)
+                    INSERT INTO {table} (JobTitle, Location, Skills, Years, Link, Company_id, Category_id, CitizenPR_id)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 """,
-                record.get('Company').strip(),
-                        record.get('Job_title').strip(),
-                        record.get('Location').strip(),
-                        record.get('Category').strip(),
-                        record.get('Skills').strip(),
-                        record.get('Years').strip(),
-                        record.get('CitizenPR').strip(),
-                        record.get('Link').strip()
-                )
+                               record.get('Job_title', '').strip(),
+                               record.get('Location', '').strip(),
+                               record.get('Skills', '').strip(),
+                               record.get('Years', '').strip(),
+                               record.get('Link', '').strip(),
+                               company_id,
+                               category_id,
+                               citizenPR_id
+                               )
                 inserted += 1
             except Exception as e:
                 failed += 1
