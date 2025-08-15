@@ -24,6 +24,33 @@ namespace web_crawling_findingjobs
         protected global::System.Web.UI.WebControls.ObjectDataSource odsJobs;
 
         /// <summary>
+        /// odsCategory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource odsCategory;
+
+        /// <summary>
+        /// ddlFilterCategory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlFilterCategory;
+
+        /// <summary>
+        /// UpdatePanelForGrdMovies control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelForGrdMovies;
+
+        /// <summary>
         /// grdJobs control.
         /// </summary>
         /// <remarks>

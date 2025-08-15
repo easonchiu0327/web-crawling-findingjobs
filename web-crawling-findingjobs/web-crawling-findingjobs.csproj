@@ -211,8 +211,11 @@
     </Compile>
     <Compile Include="JobListData\JobListDAO.cs" />
     <Compile Include="JobListLogic\CategoryUtils\Category.cs" />
+    <Compile Include="JobListLogic\CategoryUtils\CategoryUtilities.cs" />
     <Compile Include="JobListLogic\CitizenPR\CitizenPR.cs" />
+    <Compile Include="JobListLogic\CitizenPR\CitizenPRUtilities.cs" />
     <Compile Include="JobListLogic\CompanyUtils\Company.cs" />
+    <Compile Include="JobListLogic\CompanyUtils\CompanyUtilities.cs" />
     <Compile Include="JobListLogic\JobUtils\Job.cs" />
     <Compile Include="JobListLogic\JobUtils\JobUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,17 +1,38 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AllJobs.aspx.cs" Inherits="web_crawling_findingjobs.About" %>
+﻿<%@ Page Title="About" Language="C#" Async="true" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AllJobs.aspx.cs" Inherits="web_crawling_findingjobs.About" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <%--How does the code work here:
+        1. Page loads (first time)
+            1.1 odsCategory runs CategoryUtilities.SelectAll() to fetch all categories from DB.
+            1.2 ddlFilterCategory binds to that data (Categories for text, Category_id for value).
+        2. User changes the category in ddlFilterCategory
+            2.1 AutoPostBack="True", the page triggers a partial postback
+            2.2 The AsyncPostBackTrigger for ddlFilterCategory ensures only the GridView area refreshes (not the whole page).
+            2.3 When user pick a category, ASP.NET calls ddlFilterCategory_SelectedIndexChanged(), internally calls your SQL method JobSelectByCategory() at code behind.
+        3. Data returned to C# at code behind
+            3.1 List<Job> is created from the SQL reader results.
+            3.2 Each row is mapped into a Job object with fields like Company, JobTitle, Location, Category, etc.
+            3.3 Bind results to GridView
+        4. UI updates without full refresh
+            4.1 Because of UpdatePanel, only the GridView HTML is re-rendered and sent back to the browser.
+        --%>
     <style>
 
     </style>
-
     <!-- Data Sources -->
     <asp:ObjectDataSource runat="server"
         ID="odsJobs"
-        SelectMethod="SellectALL"
+        SelectMethod="SelectByCategory"
         TypeName="web_crawling_findingjobs.JobListLogic.JobUtils.JobUtilities">
+        <%--This select is controled by the dropdown filter--%>
+        <%--<SelectParameters>
+            <asp:Parameter Name="categoryId" Type="Int32"></asp:Parameter>
+        </SelectParameters>--%>
+    </asp:ObjectDataSource>
+    <asp:ObjectDataSource runat="server" ID="odsCategory" 
+        SelectMethod="SelectAll" 
+        TypeName="web_crawling_findingjobs.JobListLogic.CategoryUtils.CategoryUtilities">
     </asp:ObjectDataSource>
     <!-- UI Components -->
     <div class="container my-4">
@@ -23,34 +44,39 @@
     <div class="mb-4">
         <h2 class="h5 text-muted">This is the entire job collection — some explanation</h2>
     </div>
-    <!-- Responsive table wrapper -->
-    <div class="table-responsive">
-        <asp:GridView 
-            ID="grdJobs" 
-            runat="server" 
-            AutoGenerateColumns="False" 
-            DataSourceID="odsJobs"
-            CssClass="table table-bordered table-sm align-middle jobs-grid">
-            <Columns>
-                <asp:BoundField DataField="Id" HeaderText="Id" SortExpression="Id"></asp:BoundField>
-                <asp:BoundField DataField="CompanyName" HeaderText="CompanyName" SortExpression="CompanyName"></asp:BoundField>
-                <asp:BoundField DataField="JobTitle" HeaderText="JobTitle" SortExpression="JobTitle"></asp:BoundField>
-                <asp:BoundField DataField="Location" HeaderText="Location" SortExpression="Location"></asp:BoundField>
-                <asp:BoundField DataField="Category" HeaderText="Category" SortExpression="Category"></asp:BoundField>
-                <asp:BoundField DataField="Skills" HeaderText="Skills" SortExpression="Skills"></asp:BoundField>
-                <asp:BoundField DataField="Years" HeaderText="Years" SortExpression="Years"></asp:BoundField>
-                <asp:BoundField DataField="CitizePR" HeaderText="CitizePR" SortExpression="CitizePR"></asp:BoundField>
-                <asp:TemplateField HeaderText="Link">
-                    <ItemTemplate>
-                        <asp:HyperLink runat="server" Target="_blank"
-                            NavigateUrl='<%# Eval("Link") %>'
-                            Text="View"
-                            CssClass="btn btn-sm btn-primary" />
-                    </ItemTemplate>
-                </asp:TemplateField>
-            </Columns>
-        </asp:GridView>
+    <!-- Category Filter -->
+    <div class="form-group">
+        <label for="ddlFilterCategory">Filter by Category</label>
+        <asp:DropDownList runat="server" ID="ddlFilterCategory"
+            DataSourceID="odsCategory"
+            DataTextField="Categories"
+            DataValueField="Category_id"
+            AutoPostBack="True"
+            AppendDataBoundItems="true"
+            OnSelectedIndexChanged="ddlFilterCategory_SelectedIndexChanged">
+            <%--allow viewing all movies--%>
+            <asp:ListItem Text="All Categories" Value="0" />
+        </asp:DropDownList>
     </div>
+    <!-- Wrap GridView in UpdatePanel for AJAX -->
+    <!-- Set of technologies used to update web pages after page load.-->
+    <!-- Allows developers to make updates without reloading the web page which allows for more dynamic content and a richer user experience.-->
+    <!-- The page should not reload between selections-->
+    <asp:UpdatePanel ID="UpdatePanelForGrdMovies" runat="server">
+        <%--this trigger in the update panel is controlled by the ddlFilterCategory--%>
+        <Triggers>
+            <asp:AsyncPostBackTrigger ControlID="ddlFilterCategory" />
+        </Triggers>
+        <ContentTemplate>
+            <div class="table-responsive">
+                <%--Name of the columns in gridvew (DataField="Company", "Category", etc.) depend on the alias names return from SQL.--%>
+                <%--The data source here on gridview is pointed at code behind--%>
+                <asp:GridView runat="server"
+                    ID="grdJobs">
+                </asp:GridView>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 
     <div class="mb-4">
         <h2 class="h5 text-muted">Just some random pop up</h2>
@@ -66,54 +92,24 @@
             <ContentTemplate>
                 <!-- Data source for the random grid -->
                 <asp:ObjectDataSource ID="odjJobsRandom" runat="server"
-                    SelectMethod="SellectRandomJob"
+                    SelectMethod="SelectRandomJob"
                     TypeName="web_crawling_findingjobs.JobListLogic.JobUtils.JobUtilities"></asp:ObjectDataSource>
                 <asp:GridView ID="grdRandomJob"
                     runat="server"
                     AutoGenerateColumns="False"
-                    DataSourceID="odjJobsRandom"
                     CssClass="table table-bordered table-sm align-middle jobs-grid"
-                    EmptyDataText="No jobs found.">
-                    <%--subtle header styling via Bootstrap--%>
-                    <HeaderStyle CssClass="table-light" />
+                    EmptyDataText="No jobs found." DataSourceID="odjJobsRandom">
                     <Columns>
-                        <asp:BoundField DataField="Id" HeaderText="Id" SortExpression="Id">
-                            <ItemStyle CssClass="truncate" Width="80px"/>
-                        </asp:BoundField>
-                        <asp:BoundField DataField="CompanyName" HeaderText="CompanyName" SortExpression="CompanyName">
-                            <ItemStyle CssClass="truncate" Width="180px"/>
-                        </asp:BoundField>
-                        <asp:BoundField DataField="JobTitle" HeaderText="JobTitle" SortExpression="JobTitle">
-                            <ItemStyle CssClass="truncate" Width="240px"/>
-                        </asp:BoundField>
-                        <asp:BoundField DataField="Location" HeaderText="Location" SortExpression="Location">
-                            <ItemStyle CssClass="truncate" Width="140px"/>
-                        </asp:BoundField>
-                        <asp:BoundField DataField="Category" HeaderText="Category" SortExpression="Category">
-                            <ItemStyle CssClass="truncate" Width="140px"/>
-                        </asp:BoundField>
-                        <%--Long text should wrap--%>
-                        <asp:BoundField DataField="Skills" HeaderText="Skills" SortExpression="Skills">
-                            <ItemStyle CssClass="wrap" Width="420px"/>
-                        </asp:BoundField>
-                        <asp:BoundField DataField="Years" HeaderText="Years" SortExpression="Years">
-                            <ItemStyle CssClass="truncate" Width="100px"/>
-                        </asp:BoundField>
-                        <asp:BoundField DataField="CitizePR" HeaderText="CitizePR" SortExpression="CitizePR">
-                            <ItemStyle CssClass="truncate" Width="120px"/>
-                        </asp:BoundField>
-                        <%--Short Bootstrap-styled "View" link--%>
-                        <asp:TemplateField HeaderText="Link">
-                            <ItemStyle Width="100px" />
-                            <ItemTemplate>
-                                <asp:HyperLink runat="server"
-                                    NavigateUrl='<%# Eval("Link") %>'
-                                    Target="_blank"
-                                    Text="View"
-                                    CssClass="btn btn-sm btn-primary" />
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                    </Columns>
+                        <asp:BoundField DataField="Id" HeaderText="Id" SortExpression="Id"></asp:BoundField>
+                        <asp:BoundField DataField="Company" HeaderText="Company" SortExpression="Company"></asp:BoundField>
+                        <asp:BoundField DataField="JobTitle" HeaderText="JobTitle" SortExpression="JobTitle"></asp:BoundField>
+                        <asp:BoundField DataField="Location" HeaderText="Location" SortExpression="Location"></asp:BoundField>
+                        <asp:BoundField DataField="Category" HeaderText="Category" SortExpression="Category"></asp:BoundField>
+                        <asp:BoundField DataField="Skills" HeaderText="Skills" SortExpression="Skills"></asp:BoundField>
+                        <asp:BoundField DataField="Years" HeaderText="Years" SortExpression="Years"></asp:BoundField>
+                        <asp:BoundField DataField="CitizenPR" HeaderText="CitizenPR" SortExpression="CitizenPR"></asp:BoundField>
+                        <asp:BoundField DataField="Link" HeaderText="Link" SortExpression="Link"></asp:BoundField>
+                    </Columns>             
                 </asp:GridView>
             </ContentTemplate>
         </asp:UpdatePanel>
