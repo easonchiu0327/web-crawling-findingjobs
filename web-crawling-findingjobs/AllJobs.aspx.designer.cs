@@ -33,6 +33,24 @@ namespace web_crawling_findingjobs
         protected global::System.Web.UI.WebControls.ObjectDataSource odsCategory;
 
         /// <summary>
+        /// odsCompany control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource odsCompany;
+
+        /// <summary>
+        /// odsCitizenPR control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource odsCitizenPR;
+
+        /// <summary>
         /// ddlFilterCategory control.
         /// </summary>
         /// <remarks>
@@ -40,6 +58,24 @@ namespace web_crawling_findingjobs
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlFilterCategory;
+
+        /// <summary>
+        /// ddlFilterCompany control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlFilterCompany;
+
+        /// <summary>
+        /// ddlFilterCitizenPR control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlFilterCitizenPR;
 
         /// <summary>
         /// UpdatePanelForGrdMovies control.

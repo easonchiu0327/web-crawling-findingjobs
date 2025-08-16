@@ -47,6 +47,10 @@ namespace web_crawling_findingjobs.JobListLogic.JobUtils
             return jobListDAO.JobSelectByCompany(companyId);
         }
 
-      
+        public List<Job> SelectByFilters(int categoryId, int companyId, int citizenPRId)
+        {
+            JobListDAO jobListDAO = new JobListDAO();
+            return jobListDAO.JobSelectByFilter(categoryId, companyId, citizenPRId);
+        }
     }
 }
