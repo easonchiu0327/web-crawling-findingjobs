@@ -20,7 +20,10 @@ namespace web_crawling_findingjobs.JobListData
         {
             List<Job> jobList = new List<Job>();
             // Directly get the connection string from Web.config
-            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            ///Use HelperToAzureSql so it prefers environment variable, falls back to Web.config
+            string connectionString = ConnectionHelperToAzureSql.GetConnectionString();
 
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
@@ -55,7 +58,9 @@ namespace web_crawling_findingjobs.JobListData
         {
             List<Job> jobList = new List<Job>();
             // Directly get the connection string from Web.config
-            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //Use HelperToAzureSql so it prefers environment variable, falls back to Web.config
+            string connectionString = ConnectionHelperToAzureSql.GetConnectionString();
 
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
@@ -106,7 +111,9 @@ ORDER BY CHECKSUM(NEWID(), @RandValue)";
         {
             List<Category> categories = new List<Category>();
             // Directly get the connection string from Web.config
-            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //Use HelperToAzureSql so it prefers environment variable, falls back to Web.config
+            string connectionString = ConnectionHelperToAzureSql.GetConnectionString();
 
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
@@ -135,7 +142,9 @@ ORDER BY CHECKSUM(NEWID(), @RandValue)";
             List<Job> jobList = new List<Job>();
 
             // Directly get the connection string from Web.config
-            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //Use HelperToAzureSql so it prefers environment variable, falls back to Web.config
+            string connectionString = ConnectionHelperToAzureSql.GetConnectionString();
 
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
@@ -209,7 +218,9 @@ WHERE JobListings.Category_id = @Category_id";
         {
             List<CitizenPR> citizenPRStatus = new List<CitizenPR>();
             // Directly get the connection string from Web.config
-            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //Use HelperToAzureSql so it prefers environment variable, falls back to Web.config
+            string connectionString = ConnectionHelperToAzureSql.GetConnectionString();
 
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
@@ -238,7 +249,9 @@ WHERE JobListings.Category_id = @Category_id";
             List<Job> jobList = new List<Job>();
 
             // Directly get the connection string from Web.config
-            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //Use HelperToAzureSql so it prefers environment variable, falls back to Web.config
+            string connectionString = ConnectionHelperToAzureSql.GetConnectionString();
 
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
@@ -312,7 +325,9 @@ WHERE JobListings.CitizenPR_id = @CitizenPR_id";
         {
             List<Company> company = new List<Company>();
             // Directly get the connection string from Web.config
-            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //Use HelperToAzureSql so it prefers environment variable, falls back to Web.config
+            string connectionString = ConnectionHelperToAzureSql.GetConnectionString();
 
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
@@ -341,7 +356,9 @@ WHERE JobListings.CitizenPR_id = @CitizenPR_id";
             List<Job> jobList = new List<Job>();
 
             // Directly get the connection string from Web.config
-            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //Use HelperToAzureSql so it prefers environment variable, falls back to Web.config
+            string connectionString = ConnectionHelperToAzureSql.GetConnectionString();
 
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
@@ -417,7 +434,9 @@ WHERE JobListings.Company_id = @Company_id";
             List<Job> jobList = new List<Job>();
 
             // Directly get the connection string from Web.config
-            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //Use HelperToAzureSql so it prefers environment variable, falls back to Web.config
+            string connectionString = ConnectionHelperToAzureSql.GetConnectionString();
 
             SqlConnection conn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();

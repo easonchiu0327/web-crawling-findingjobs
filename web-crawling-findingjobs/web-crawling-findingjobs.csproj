@@ -149,6 +149,7 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <None Include="Properties\PublishProfiles\app-itjoblistings-web-canadacentral-dev-001 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -209,6 +210,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="JobListData\ConnectionHelperToAzureSql.cs" />
     <Compile Include="JobListData\JobListDAO.cs" />
     <Compile Include="JobListLogic\CategoryUtils\Category.cs" />
     <Compile Include="JobListLogic\CategoryUtils\CategoryUtilities.cs" />
