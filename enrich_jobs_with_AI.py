@@ -97,7 +97,7 @@ def analyze_job_description(link, driver):
     You are a precise information extractor. Read the job description text below and return a STRICT JSON object with these keys:
     - "Skills": short, comma-separated list of the top required skills (max 8 items); if not clear, return "Not given""
     - "Years": numeric years of experience required. (e.g., "1-2", "3+", "0", otherwise "Not given")
-    - "CitizenPR": "Y" if Canadian citizenship or Canadian permanent residence is explicitly required, otherwise "Not required".
+    - "CitizenPR": "Required" if Canadian citizenship or Canadian permanent residence is explicitly required, otherwise "Not required".
 
     Return ONLY JSON, no commentary.
 
