@@ -59,7 +59,7 @@
                     OnSelectedIndexChanged="ddlFilterCategory_SelectedIndexChanged"
                     CssClass="form-select">
                     <%--allow viewing all movies--%>
-                    <asp:ListItem Text="All Categories" Value="0" />
+                    <asp:ListItem Text="All" Value="0" />
                 </asp:DropDownList>
             </div>
 
@@ -74,7 +74,7 @@
                     OnSelectedIndexChanged="ddlFilterCompany_SelectedIndexChanged"
                     CssClass="form-select">
                     <%--allow viewing all movies--%>
-                    <asp:ListItem Text="All Company" Value="0" />
+                    <asp:ListItem Text="All" Value="0" />
                 </asp:DropDownList>
             </div>
 
@@ -89,7 +89,7 @@
                     OnSelectedIndexChanged="ddlFilterCitizenPR_SelectedIndexChanged"
                     CssClass="form-select">
                     <%--allow viewing all movies--%>
-                    <asp:ListItem Text="All CitizenPR" Value="0" />
+                    <asp:ListItem Text="All" Value="0" />
                 </asp:DropDownList>
             </div>
         </div>
