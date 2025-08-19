@@ -78,6 +78,24 @@ namespace web_crawling_findingjobs
         protected global::System.Web.UI.WebControls.DropDownList ddlFilterCitizenPR;
 
         /// <summary>
+        /// lblTotalVisitors control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTotalVisitors;
+
+        /// <summary>
+        /// lblVisitorsToday control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblVisitorsToday;
+
+        /// <summary>
         /// UpdatePanelForGrdMovies control.
         /// </summary>
         /// <remarks>

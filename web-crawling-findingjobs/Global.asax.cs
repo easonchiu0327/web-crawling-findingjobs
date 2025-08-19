@@ -25,6 +25,7 @@ namespace web_crawling_findingjobs
         protected void Session_Start(object sender, EventArgs e)
         {
             // Increment daily + total once for each new session
+            //Merge query
             const string sql = @"
 MERGE dbo.VisitorStats AS target
 USING (SELECT CAST(GETDATE() AS DATE) AS VisitDate) AS source

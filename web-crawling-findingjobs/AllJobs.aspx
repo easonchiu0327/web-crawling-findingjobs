@@ -96,6 +96,14 @@
     </div>
 
 
+    <%--Diplaying the total visitor and visitors toady--%>
+    <%--Counters are outside the UpdatePanel → they don’t refresh every time a filter changes.--%>
+    <div class="mt-2">
+        Total Visitors:
+        <asp:Label ID="lblTotalVisitors" runat="server" />
+        Today's Visitors: 
+        <asp:Label ID="lblVisitorsToday" runat="server" />
+    </div>
 
     <!-- Wrap GridView in UpdatePanel for AJAX -->
     <!-- Set of technologies used to update web pages after page load.-->
