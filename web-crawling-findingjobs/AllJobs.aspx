@@ -37,12 +37,25 @@
         SelectMethod="SelectAll"
         TypeName="web_crawling_findingjobs.JobListLogic.CitizenPR.CitizenPRUtilities"></asp:ObjectDataSource>
     <!-- UI Components -->
-    <div class="container my-4">
-        <div class="mb-2">
+    <!-- Header Row -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <!-- Left: Title -->
+        <div>
             <h1 class="fw-bold">IT Job Listing in Saskatchewan</h1>
-            <h2 class="h5 text-muted">Browse jobs and filter by category, company, or CitizenPR requirement.</h2>
+            <h2 class="h6 text-muted mb-0">Browse jobs and filter by category, company, or CitizenPR requirement.
+            </h2>
+        </div>
+        <!-- Right: Visitor Stats -->
+        <%--Counters are outside the UpdatePanel → they don’t refresh every time a filter changes.--%>
+        <div class="text-end">
+            <small class="text-muted me-2">Total Visitors:</small>
+            <asp:Label ID="lblTotalVisitors" runat="server" CssClass="fw-bold" />
+            <span class="mx-2">|</span>
+            <small class="text-muted me-2">Today's Visitors:</small>
+            <asp:Label ID="lblVisitorsToday" runat="server" CssClass="fw-bold" />
         </div>
     </div>
+ 
 
     <!-- Filter Section -->
     <div class="container mb-4">
@@ -95,15 +108,6 @@
         </div>
     </div>
 
-
-    <%--Diplaying the total visitor and visitors toady--%>
-    <%--Counters are outside the UpdatePanel → they don’t refresh every time a filter changes.--%>
-    <div class="mt-2">
-        Total Visitors:
-        <asp:Label ID="lblTotalVisitors" runat="server" />
-        Today's Visitors: 
-        <asp:Label ID="lblVisitorsToday" runat="server" />
-    </div>
 
     <!-- Wrap GridView in UpdatePanel for AJAX -->
     <!-- Set of technologies used to update web pages after page load.-->
