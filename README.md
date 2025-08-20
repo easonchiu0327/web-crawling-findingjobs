@@ -4,7 +4,10 @@ This project is a web scraping bot combining Scrapy and Selenium, enhanced with 
 It collects IT-related job listings from multiple websites, enriches them with **AI**, and saves results into a SQL Server database.
 
 # Skills
-Python, OpenAI API, Scrapy, Selenium, XPath, Prompt, JSONL, SQL Server
+- Spider: Python, OpenAI API, Scrapy, Selenium, XPath, Prompt, JSONL
+- SQL:
+- .Net Framwork:
+- Azure:
 
 # SQL Result demo
 <img width="1526" height="781" alt="image" src="https://github.com/user-attachments/assets/0b293f93-c24e-4588-a67e-2baf1dd5ff6b" />
@@ -163,6 +166,85 @@ Push to SQL Server
 ```bash
 python push_to_SSMSSQL.py
 ```
+## Deployment on Azure
+
+## Why Azure?
+- Free **$100/year student account** for development and testing  
+- Smooth integration with **.NET framework & Visual Studio**  
+- **Scalable tiers** for SQL Database (Basic DTU for cost control)  
+- Built-in **firewall, authentication, and endpoint management**  
+- Easy migration from **local SQL Server → Azure SQL**  
+
+---
+
+## Deployment Steps
+
+### 1. Azure Setup
+1. Choose **Azure for Students Subscription** ($100/year credit).  
+2. Open **Cloud Shell** → create a **Storage Account**.  
+3. Create **Resource Group**  
+   - Naming convention: `{resourcetype}-{name}-{location}-{environment}-{instance}`  
+   - Pin to dashboard for easy management.  
+
+### 2. Web App Service
+- Create **App Service** for hosting the ASP.NET website.  
+
+### 3. Azure SQL Database
+1. Create **SQL Database** + SQL Server.  
+2. Use **SQL + Azure AD Authentication**.  
+3. Set SQL login password.  
+4. Scale to **Basic DTU (5 DTUs, 2GB max)** for cost savings.  
+5. Configure **public endpoint** connectivity.  
+6. Set firewall rules:  
+   - Local SSMS ↔ Azure SQL (via IP whitelist)  
+   - Azure Web App ↔ Azure SQL (internal Azure connectivity).  
+7. If laptop IP changes → update firewall settings in SQL Server network configuration.  
+
+### 4. Database Migration
+- One-time transfer from **local SQL Server → Azure SQL**:  
+   1. In SSMS → `Tasks → Export Data-tier Application` → save to Azure Storage (BACPAC).  
+   2. Import BACPAC into Azure SQL.  
+   3. Configure authentication & pricing tier (adjustable on demand).  
+
+### 5. Connection String & Secrets
+1. Update `web.config` to point to Azure SQL.  
+2. Store secrets on Azure:  
+   - Go to **Configuration → Environment Variables** → add `SQLDB_CONN`.  
+3. Add helper class for calling:  
+   ```csharp
+   Environment.GetEnvironmentVariable("SQLDB_CONN")
+
+4. Adjust DAO connection functions to use env var.
+
+### 6. Deploy ASP.NET to Azure  
+
+1. In Visual Studio:
+   - Right-click solution → **Publish** → Azure → App Service  
+   - Sign in → select resource group → select App Service → publish  
+
+
+### 7. Cost Optimization  
+
+1. - **Basic DTU Tier** → optimized (~CA$0.20 daily).  
+2. - Used **Azure Cost Analysis + Anomaly Insights** to track and reduce expenses.  
+
+
+### 8. Future Improvements  
+
+1. - Containerize spiders with **Azure Container Apps**.  
+
+
+## Summary  
+
+- On **Azure App Service** → app uses `SQLDB_CONN` env variable.  
+- On **Local Dev** → connect via SSMS, but only when laptop SQL Server is running.  
+
+
+## References  
+
+- [Azure CLI Documentation (Microsoft Learn)](https://learn.microsoft.com/en-us/cli/azure/?view=azure-cli-latest)  
+- [YouTube: Azure SQL Database Tutorial (Part 1)](https://www.youtube.com/watch?v=EzdqO6jX8u4&list=PLdo4fOcmZ0oVSBX3Lde8owu6dSgZLIXfu&index=2)  
+- [YouTube: Azure App Service + SQL Database Integration](https://www.youtube.com/watch?v=sW1OGB5ztZI&list=PLdo4fOcmZ0oVSBX3Lde8owu6dSgZLIXfu&index=2)
 
 ### ⚠️ **Disclaimer**
 - This project is for educational use only. 
