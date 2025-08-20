@@ -5,9 +5,9 @@ It collects IT-related job listings from multiple websites, enriches them with *
 
 # Skills
 - Spider: Python, OpenAI API, Scrapy, Selenium, XPath, Prompt, JSONL
-- SQL:
-- .Net Framwork:
-- Azure:
+- SQL: SSMS, Azure SQL Database, query, BACPAC
+- .Net Framwork: C#, ASP.NET, OOP, AJAX, GridView, DropDownList, Bootstrap 5
+- Azure: Resource Groups, App Service, SQL Server, SQL Database, Cloud Shell, CLI, Cost Analysis, Environment Variables, Firewall Rules
 
 # SQL Result demo
 <img width="1526" height="781" alt="image" src="https://github.com/user-attachments/assets/0b293f93-c24e-4588-a67e-2baf1dd5ff6b" />
