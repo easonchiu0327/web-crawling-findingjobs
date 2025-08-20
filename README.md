@@ -4,10 +4,10 @@ This project is a web scraping bot combining Scrapy and Selenium, enhanced with 
 It collects IT-related job listings from multiple websites, enriches them with **AI**, and saves results into a SQL Server database.
 
 # Skills
-- Spider: Python, OpenAI API, Scrapy, Selenium, XPath, Prompt, JSONL
-- SQL: SSMS, Azure SQL Database, query, BACPAC
-- .Net Framwork: C#, ASP.NET, OOP, AJAX, GridView, DropDownList, Bootstrap 5
-- Azure: Resource Groups, App Service, SQL Server, SQL Database, Cloud Shell, CLI, Cost Analysis, Environment Variables, Firewall Rules
+- **Spider**: Python, OpenAI API, Scrapy, Selenium, XPath, Prompt, JSONL
+- **SQL**: SSMS, Azure SQL Database, query, BACPAC
+- **.Net Framwork**: C#, ASP.NET, OOP, AJAX, GridView, DropDownList, Bootstrap 5
+- **Microsoft Azure**: Resource Groups, App Service, SQL Server, SQL Database, Cloud Shell, CLI, Cost Analysis, Environment Variables, Firewall Rules
 
 # SQL Result demo
 <img width="1526" height="781" alt="image" src="https://github.com/user-attachments/assets/0b293f93-c24e-4588-a67e-2baf1dd5ff6b" />
@@ -166,7 +166,7 @@ Push to SQL Server
 ```bash
 python push_to_SSMSSQL.py
 ```
-## Deployment on Azure
+## Deployment on Microsoft Azure
 
 ## Why Azure?
 - Free **$100/year student account** for development and testing  
