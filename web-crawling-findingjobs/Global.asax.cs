@@ -28,7 +28,7 @@ namespace web_crawling_findingjobs
             //Merge query
             const string sql = @"
 MERGE dbo.VisitorStats AS target
-USING (SELECT CAST(GETDATE() AS DATE) AS VisitDate) AS source
+USING (SELECT CONVERT(date, SYSDATETIMEOFFSET() AT TIME ZONE 'Canada Central Standard Time') AS VisitDate) AS source
 ON (target.VisitDate = source.VisitDate)
 WHEN MATCHED THEN
     UPDATE SET 
