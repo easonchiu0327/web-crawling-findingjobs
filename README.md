@@ -15,7 +15,7 @@ This project is a web scraping bot combining Scrapy and Selenium, enhanced with 
 
 ## Architecture 
 
-![Architecture Diagram](Architecture.drawio.svg)
+![Architecture Diagram](Architecture.drawio.png)
 
 ---
 
