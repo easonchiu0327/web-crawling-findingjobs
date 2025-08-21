@@ -17,6 +17,7 @@ This project is a web scraping bot combining Scrapy and Selenium, enhanced with 
 
 ![Architecture Diagram](/Architecture.drawio.svg)
 *Note*:In the future, the data will be stored directly in Azure SQL from the scraper.
+
 ---
 
 <details>
