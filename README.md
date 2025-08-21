@@ -14,10 +14,8 @@ This project is a web scraping bot combining Scrapy and Selenium, enhanced with 
 <img width="1542" height="847" alt="image" src="https://github.com/user-attachments/assets/aa1f1f8a-1df7-4909-a57d-5d23b5c8cd27" />
 
 ## Architecture 
-with diagrams
 
-## Quickstart 
-?
+![Architecture Diagram](Architecture.drawio.svg)
 
 ---
 
