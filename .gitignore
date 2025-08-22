@@ -361,3 +361,34 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# --- Project-specific (Python spiders & data) ---
+
+# Python bytecode (expand beyond VS default)
+*.pyo
+*.pyd
+
+# Virtual environments & dotenv
+env/
+venv/
+*.env
+
+# JetBrains IDE
+.idea/
+
+# Scraper outputs (scoped to your data/output directories)
+output/
+output/**
+
+# If you store data in a known folder (uncomment/adjust as needed)
+# data/
+# data/**
+
+# Data file types (OPTIONAL—prefer scoping to output/ or data/ instead of global)
+# output/*.csv
+# output/*.json
+# output/*.jsonl
+# output/*.xlsx
+
+# Generic config files produced during runs (if they are not source-controlled)
+# *.cfg
