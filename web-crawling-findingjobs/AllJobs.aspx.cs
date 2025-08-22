@@ -33,7 +33,7 @@ namespace web_crawling_findingjobs
             SELECT ISNULL((
                 SELECT DailyVisitors 
                 FROM dbo.VisitorStats 
-                WHERE VisitDate = CAST(GETDATE() AS DATE)
+                WHERE VisitDate = CONVERT(date, SYSDATETIMEOFFSET() AT TIME ZONE 'Canada Central Standard Time')
             ), 0)";
 
                 using (var conn = ConnectionHelperToAzureSql.GetConnection())
