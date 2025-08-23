@@ -2,6 +2,15 @@
 
 This project is a web scraping bot combining Scrapy and Selenium, enhanced with the OpenAI API for analyzing job descriptions. It collects Saskatchewan IT job listings from multiple websites, enriches them with AI, and saves results into a SQL Server database. A .NET (ASP.NET) web app displays the data, and the site is deployed on Microsoft Azure.
 
+The aim of this project is to help
+my classmates and me find IT
+jobs in Saskatchewan after
+graduation. Instead of manually
+visiting each company's
+website, browsing Linkedin or
+Indeed, or constantly checking
+emails from job boards.
+
 ## Skills / Tech Stack
 - **Spider**: Python, OpenAI API, Scrapy, Selenium, XPath, Prompt, JSONL
 - **SQL**: SSMS, Azure SQL Database, query, BACPAC
