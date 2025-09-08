@@ -24,8 +24,8 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 #------------------------------------------------------------------------------------
 # TEST the differences between other models
-category_model = "gpt-5-nano"
-job_description_model = "gpt-4o-mini"
+category_model = "gpt-5"
+job_description_model = "gpt-5"
 #------------------------------------------------------------------------------------
 
 # --- Build ONE shared driver and reuse it-faster
