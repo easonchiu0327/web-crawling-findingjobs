@@ -72,12 +72,12 @@ For each job detail page, it uses Selenium to load and extract the main body tex
 ### Stage 2: AI-Powered Enrichment
 
 1. Job Category Identification
-   - Sends all job titles in one batch to OpenAI (gpt-5-nano).
+   - Sends all job titles in one batch to OpenAI (gpt-5).
    - Returns exactly one category per job from a fixed list (Data, Developer, QA, Analyst, etc.).
 2. Job Description Analysis
    - Visits each job’s detail page using Selenium.
    - Extracts all visible text from main, article, or body.
-   - Sends text to OpenAI (gpt-4o-mini) with instructions to return a a strict JSON file
+   - Sends text to OpenAI (gpt-5) with instructions to return a a strict JSON file
 
 ### Stage 3: Load data into SQL
 
